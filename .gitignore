@@ -1,0 +1,4 @@
+build/
+src/static/data
+
+node_modules

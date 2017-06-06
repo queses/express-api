@@ -1,0 +1,31 @@
+{
+  "name": "mrattle-api",
+  "version": "0.0.1",
+  "description": "Max Rattle's API",
+  "main": "index.js",
+  "author": "Max Rattle <quesesr@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "backpack dev",
+    "build": "cross-env NODE_ENV=production backpack build",
+    "start": "cross-env NODE_ENV=production node build/main.js"
+  },
+  "babel": {
+    "presets": [
+      "backpack-core/babel",
+      "stage-2"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.16.2",
+    "babel-preset-stage-2": "^6.24.1",
+    "backpack-core": "^0.3.0",
+    "compression": "^1.6.2",
+    "express": "^4.15.3",
+    "jimp": "^0.2.28",
+    "present": "^1.0.0",
+    "qs": "^6.4.0",
+    "sharp": "^0.18.1",
+    "touch": "^1.0.0"
+  }
+}
