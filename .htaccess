@@ -1,0 +1,4 @@
+PassengerAppType node
+PassengerNodejs /home/ratt/.nvm/versions/node/v7.10.0/bin/node
+PassengerAppRoot /home/ratt/files/www/host/mrattle-api
+PassengerStartupFile build/main.js

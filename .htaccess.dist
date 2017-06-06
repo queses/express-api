@@ -1,0 +1,4 @@
+PassengerAppType node
+PassengerNodejs {{nodePath}}
+PassengerAppRoot {{appRoot}}
+PassengerStartupFile build/main.js
