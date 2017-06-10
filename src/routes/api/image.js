@@ -5,16 +5,25 @@ import { extname } from 'path'
 import touch from 'touch'
 import axios from 'axios'
 import jimp from 'jimp'
+import qs from 'qs'
+import NodeCache from 'node-cache'
 // DBG
 import present from 'present'
-import qs from 'qs'
 
 var router = Router()
 const BASE_URL = '/image/'
 
+// Настройки времени кэширования, в секундах
+const CACHE_TTL = 500, CACHE_PERIOD = 60
+const imageCache = new NodeCache( { stdTTL: CACHE_TTL, checkperiod: CACHE_PERIOD, useClones: false } );
+
 /* GET user by ID. */
 const DEF_WIDTH = 300
 router.get(BASE_URL + 'sharp', async function (req, res, next) {
+  // Функция для установки типа
+  let setType = (lRes, lExt) => {
+    return lRes.type('image/' + lExt)
+  }
   let t1 = present()
   if (!req.query.url) {
     res.end()
@@ -26,23 +35,36 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
   //   .replace(/(\/[/]?|\?|\:|\*|\\|\<|\>|\|\'|\")/g, '__')
   // console.log(JSON.stringify(qs.stringify(req.query)).slice(0, 186))
   // console.log(JSON.stringify(req.query).slice(0, 186))
-  let fileName = Buffer.from(JSON.stringify(qs.stringify(req.query)).slice(0, 186))
-    .toString('base64').replace(/\//g, '_')
+  const queryString = qs.stringify(req.query).slice(0, 186);
   let ext = extname(req.query.url).slice(1)
-  // Убираем query из расширения
+  // Убираем query из расширения, если он там есть
   ext = ext.replace(/\?.*$/, '')
+  const resp = imageCache.get(queryString)
+  if (resp) {
+    console.log('getting from memory')
+    setType(res, ext).send(resp)
+    imageCache.ttl(queryString, CACHE_TTL, () => { 
+      true
+    })
+    return
+  }
   // Если расширение слишком длинное (т.е. вероятнее всего неправильное),
   // то принудительно применяем jpg
   if (ext.length >  6) req.query.j = true
-  console.log(fileName, ext)
-  const width = parseInt(req.query.w) || DEF_WIDTH
-  // fileName = `w${width}__${fileName}`
+  // console.log(fileName, ext)
+  let fileName = Buffer.from(queryString)
+    .toString('base64').replace(/\//g, '_')
   const filePath = imagePath + '/' + fileName
   if (fs.existsSync(filePath)) {
     touch(filePath)
-    res.type('image/' + ext).sendFile(filePath)
+    setType(res, ext).sendFile(filePath)
+    fs.readFile(filePath, (err, data) => {
+      imageCache.set(queryString, data)
+    })
     return
   }
+  const width = parseInt(req.query.w) || DEF_WIDTH
+  // fileName = `w${width}__${fileName}`
   // const origFilePath = imagePath + '/orig__' + fileName
   // touch.sync(origFilePath)
   let origImgRes
@@ -72,7 +94,10 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
   const imgB = await sharper.toBuffer()
   origImgBuffer = undefined
   fs.writeFile(filePath, imgB)
-  res.type('image/' + ext).send(imgB)
+  setType(res, ext).send(imgB)
+  imageCache.set(queryString, imgB, (err, scs) => {
+    true
+  })
   let t2 = present()
   console.log("Call to doSomething took " + (t2 - t1) + " milliseconds.")
 })
