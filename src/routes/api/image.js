@@ -64,9 +64,6 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
     return
   }
   const width = parseInt(req.query.w) || DEF_WIDTH
-  // fileName = `w${width}__${fileName}`
-  // const origFilePath = imagePath + '/orig__' + fileName
-  // touch.sync(origFilePath)
   let origImgRes
   try {
     origImgRes = await axios.get(req.query.url, {
@@ -95,9 +92,9 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
   streamToBuffer(sharper).then((buff) => {
     origImgBuffer = undefined
     fs.writeFile(filePath, buff)
-    // imageCache.set(queryString, buff, (err, scs) => {
-    //   true
-    // })
+    imageCache.set(queryString, buff, (err, scs) => {
+      true
+    })
     let t2 = devPresent() // DBG
     devLog("Writing to file took " + (t2 - t1) + " milliseconds.")
   })
