@@ -14,7 +14,7 @@ var router = Router()
 const BASE_URL = '/image/'
 
 // Настройки времени кэширования, в секундах
-const CACHE_TTL = 500, CACHE_PERIOD = 60
+const CACHE_TTL = global.env.IMG_CACHE_TTL, CACHE_PERIOD = global.env.IMG_CACHE_PERIOD
 const imageCache = new NodeCache( { stdTTL: CACHE_TTL, checkperiod: CACHE_PERIOD, useClones: false } );
 
 /* GET user by ID. */
