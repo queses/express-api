@@ -16,6 +16,12 @@ const BASE_URL = '/image/'
 const CACHE_TTL = global.env.IMG_CACHE_TTL, CACHE_PERIOD = global.env.IMG_CACHE_PERIOD
 const imageCache = new NodeCache( { stdTTL: CACHE_TTL, checkperiod: CACHE_PERIOD, useClones: false } );
 
+function getParam (param, type) {
+  if (typeof param === 'array') return param[0]
+  else if (typeof param === 'object') return param[Object.keys(param)[0]]
+  else return param
+}
+
 /* GET user by ID. */
 const DEF_WIDTH = 300
 router.get(BASE_URL + 'sharp', async function (req, res, next) {
@@ -35,7 +41,8 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
   // devLog(JSON.stringify(qs.stringify(req.query)).slice(0, 186))
   // devLog(JSON.stringify(req.query).slice(0, 186))
   const queryString = qs.stringify(req.query).slice(0, 186);
-  let ext = extname(req.query.url).slice(1)
+  const url = getParam(req.query.url)
+  let ext = extname(url).slice(1)
   // Убираем query из расширения, если он там есть
   ext = ext.replace(/\?.*$/, '')
   const resp = imageCache.get(queryString)
@@ -49,7 +56,7 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
   }
   // Если расширение слишком длинное (т.е. вероятнее всего неправильное),
   // то принудительно применяем jpg
-  if (ext.length >  6) req.query.j = true
+  if (ext.length > 6) req.query.j = true
   // devLog(fileName, ext)
   let fileName = Buffer.from(queryString)
     .toString('base64').replace(/\//g, '_')
@@ -63,10 +70,10 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
     })
     return
   }
-  const width = parseInt(req.query.w) || DEF_WIDTH
+  const width = parseInt(getParam(req.query.w)) || DEF_WIDTH
   let origImgRes
   try {
-    origImgRes = await axios.get(req.query.url, {
+    origImgRes = await axios.get(url, {
       responseType: 'arraybuffer'
     })
   } catch (error) {
@@ -82,9 +89,9 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
   // else if (ext === 'png') sharper = sharper.png({
   //   compressionLevel: 7
   // })
-  if (ext === 'jpg' || ext === 'jpeg' || req.query.j) {
+  if (ext === 'jpg' || ext === 'jpeg' || getParam(req.query.j)) {
     sharper = sharper.jpeg({
-      quality: req.query.q || 80
+      quality: parseInt(getParam(req.query.q)) || 80
     })
     ext = 'jpeg'
   }
@@ -100,45 +107,6 @@ router.get(BASE_URL + 'sharp', async function (req, res, next) {
   })
   let t2 = devPresent() // DBG
   devLog("Image processing took " + (t2 - t1) + " milliseconds.")
-})
-
-router.get(BASE_URL + 'jimp', async function (req, res, next) {
-  let t1 = present()
-  if (!req.query.url) {
-    res.end()
-    return
-  }
-  // else
-  const imagePath = global.conf.staticPath + '/data/sharp'
-  let fileName = req.query.url.replace(/(http|https|ftp)?\:\/\//g, '')
-    .replace(/(\/[/]?|\?|\:|\*|\\|\<|\>|\|\'|\")/g, '__')
-  const ext = extname(fileName).slice(1)
-  const width = parseInt(req.query.w) || DEF_WIDTH
-  fileName = `w${width}__${fileName}`
-  const filePath = imagePath + '/' + fileName
-  // const origFilePath = imagePath + '/orig__' + fileName
-  // touch.sync(origFilePath)
-  let origImgRes
-  try {
-    origImgRes = await axios.get(req.query.url, {
-      responseType: 'arraybuffer'
-    })
-  } catch (error) {
-    res.send()
-    return
-  }
-  // else
-  // origImgRes.data.pipe(fs.createWriteStream(origFilePath));
-  // sharp(origFilePath).toFile(filePath)
-  let origImgBuffer = Buffer.from(origImgRes.data, 'binary')
-  origImgRes = undefined
-  const img = await jimp.read(origImgBuffer)
-  const imgB = img.quality(60).resize(width, -1).getBuffer('image/' + ext, (err, buff) => {
-    fs.writeFile(filePath, buff)
-    res.type('image/' + ext).send(buff)
-    let t2 = present()
-    devLog("Took " + (t2 - t1) + " milliseconds.")
-  })
 })
 
 export default router
