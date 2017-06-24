@@ -175,14 +175,13 @@ router.get(BASE_URL + 'thumb', async function (req, res, next) {
   // else if (ext === 'png') sharper = sharper.png({
   //   compressionLevel: 7
   // })
-  // if (ext === 'jpg' || ext === 'jpeg' || getParam(req.query.j)) {
-  //   sharper = sharper.jpeg({
-  //     quality: parseInt(getParam(req.query.q)) || 80
-  //   })
-  //   ext = 'jpeg'
-  // }
+  if (ext === 'jpg' || ext === 'jpeg' || getParam(req.query.j)) {
+    img = img.setFormat('JPG')
+    ext = 'jpeg'
+  }
+  img = img.quality(parseInt(getParam(req.query.q)) || 80)
   img.stream().pipe(res)
-  img.toBuffer('PNG', (err, buff) => {
+  img.toBuffer((err, buff) => {
     origImgBuffer = undefined
     fs.writeFile(filePath, buff)
     imageCache.set(queryString, buff, (err, scs) => {
