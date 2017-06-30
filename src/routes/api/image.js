@@ -167,26 +167,25 @@ router.get(BASE_URL + 'thumb', async function (req, res, next) {
     return
   }
   // else
-  // origImgRes.data.pipe(fs.createWriteStream(origFilePath));
-  // sharp(origFilePath).toFile(filePath)
+  // Create buffer from axios-response
   let origImgBuffer = Buffer.from(origImgRes.data, 'binary')
   origImgRes = undefined
   let img = gm(origImgBuffer).resize(width)
-  // else if (ext === 'png') sharper = sharper.png({
-  //   compressionLevel: 7
-  // })
+  origImgBuffer = undefined
+  // To jpeg convert operation
   if (ext === 'jpg' || ext === 'jpeg' || getParam(req.query.j)) {
     img = img.setFormat('JPG')
     ext = 'jpeg'
   }
+  // Decreace quality
   img = img.quality(parseInt(getParam(req.query.q)) || 80)
-  img.stream().pipe(res)
-  img.toBuffer((err, buff) => {
-    origImgBuffer = undefined
+  const istr = img.stream()
+  // Send image response
+  istr.pipe(res)
+  // Write to file and cache
+  streamToBuffer(istr).then((buff) => {
     fs.writeFile(filePath, buff)
-    imageCache.set(queryString, buff, (err, scs) => {
-      true
-    })
+    imageCache.set(queryString, buff, (err, scs) => {})
     let t2 = devPresent() // DBG
     devLog("Writing to file took " + (t2 - t1) + " milliseconds.")
   })
