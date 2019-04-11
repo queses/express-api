@@ -1,4 +1,5 @@
 build/
+tmp/
 src/static/data
 
 node_modules

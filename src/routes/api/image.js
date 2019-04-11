@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import fs from 'fs'
 import { extname } from 'path'
-import touch from 'touch'
 import axios from 'axios'
 import jimp from 'jimp'
 import qs from 'qs'
@@ -58,17 +57,20 @@ router.get(BASE_URL + 'jimp', async function (req, res, next) {
   // то принудительно применяем jpg
   if (ext.length > 6) req.query.j = true
   // devLog(fileName, ext)
-  let fileName = Buffer.from(queryString)
-    .toString('base64').replace(/\//g, '_')
+  const fileName = Buffer.from(queryString).toString('base64').replace(/\//g, '_')
+
   const filePath = imagePath + '/' + fileName
   if (fs.existsSync(filePath)) {
-    touch(filePath)
-    let fstream = fs.createReadStream(filePath)
-    fstream.pipe(res)
-    streamToBuffer(fstream).then((buff) => {
-      imageCache.set(queryString, buff)
-    })
-    return
+    const { birthtime } = fs.statSync(filePath)
+    if ((new Date().getTime() - birthtime.getTime()) / 1000 <= CACHE_TTL) {
+      const fstream = fs.createReadStream(filePath)
+      fstream.pipe(res)
+      streamToBuffer(fstream).then((buff) => {
+        imageCache.set(queryString, buff)
+      })
+
+      return
+    }
   }
   const width = parseInt(getParam(req.query.w)) || DEF_WIDTH
   let origImgRes
@@ -144,18 +146,22 @@ router.get(BASE_URL + 'thumb', async function (req, res, next) {
   // то принудительно применяем jpg
   if (ext.length > 6) req.query.j = true
   // devLog(fileName, ext)
-  let fileName = Buffer.from(queryString)
-    .toString('base64').replace(/\//g, '_')
+  const fileName = Buffer.from(queryString).toString('base64').replace(/\//g, '_')
   const filePath = imagePath + '/' + fileName
+
   if (fs.existsSync(filePath)) {
-    touch(filePath)
-    let fstream = fs.createReadStream(filePath)
-    fstream.pipe(res)
-    streamToBuffer(fstream).then((buff) => {
-      imageCache.set(queryString, buff)
-    })
-    return
+    const { birthtime } = fs.statSync(filePath)
+    if ((new Date().getTime() - birthtime.getTime()) / 1000 <= CACHE_TTL) {
+      const fstream = fs.createReadStream(filePath)
+      fstream.pipe(res)
+      streamToBuffer(fstream).then((buff) => {
+        imageCache.set(queryString, buff)
+      })
+
+      return
+    }
   }
+
   const width = parseInt(getParam(req.query.w)) || DEF_WIDTH
   let origImgRes
   try {
