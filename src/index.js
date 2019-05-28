@@ -1,30 +1,27 @@
-import express from 'express'
-import compression from 'compression'
-import fs from 'fs'
+require('dotenv').config()
 
-import api from './routes/api'
-import config from './config.js'
-global.conf = config
+const express = require('express')
+const apiRoutes = require('./core/web/api-routes')
+const { appConfig } = require('./config')
+const { logInfo, logError } = require('./utils/log-utils')
+const path = require('path')
 
-let createDir = (uri) => {
-  if (!fs.existsSync(uri)){
-    fs.mkdirSync(uri);
-    console.log(`Directory ${uri} created!`)
-  }
+
+const start = async () => {
+  const app = express()
+  const host = process.env.HOST || '127.0.0.1'
+  const port = process.env.PORT || 3007
+
+  app.set('port', port)
+
+  app.use('/api', apiRoutes)
+
+  // Why api/?
+  app.use('/api/static', express.static(appConfig.staticPath));
+
+  app.listen(port, host)
+  logInfo(`App started on ${host}:${port}`)
 }
 
-for (let dir of config.dirs) {
-  createDir(dir)
-}
-
-const app = express()
-const host = process.env.HOST || '127.0.0.1'
-const port = process.env.PORT || 3001
-
-app.set('port', port)
-
-// Import API Routes
-app.use('/api', api)
-app.use('/api/static', express.static(config.staticPath));
-
-app.listen(port, host)
+start()
+  .catch(logError)

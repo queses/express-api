@@ -1,0 +1,24 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.{js,ts,py}]
+charset = utf-8
+
+[src/**.{ts,js,json}]
+indent_style = space
+indent_size = 2
+
+[*.{ts,tsx}]
+indent_style = space
+indent_size = 2
+
+[*.js]
+indent_style = space
+indent_size = 2
+
+[*.css]
+indent_style = space
+indent_size = 2

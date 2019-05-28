@@ -1,7 +1,12 @@
-build/
-src/static/data
+.idea
 
 node_modules
 
+/build
+/src/static/data
+/tmp
+
 .htaccess
-env.config.js
+.env
+
+!.gitkeep
