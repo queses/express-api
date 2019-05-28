@@ -1,15 +1,15 @@
-const { getIsProd } = require('./env-utils')
+import { getIsProd } from './env-utils';
 
-module.exports.logInfo = (...messages) => {
+export const logInfo = (...messages) => {
   Reflect.apply(console.log, undefined, messages)
 }
 
-module.exports.logDevInfo = (...messages) => {
+export const logDevInfo = (...messages) => {
   if (!getIsProd()) {
     Reflect.apply(console.log, undefined, messages)
   }
 }
 
-module.exports.logError = (...messages) => {
+export const logError = (...messages) => {
   Reflect.apply(console.error, undefined, messages)
 }

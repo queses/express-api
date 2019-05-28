@@ -1,8 +1,9 @@
-const { resolve } = require('path')
+import { resolve } from 'path'
 
-const APP_PATH = './src'
-const STATIC_PATH = resolve(APP_PATH + '/static')
+const STATIC_PATH = resolve('./static')
+const DATA_PATH = resolve('./data')
 
-module.exports.appConfig = {
-  staticPath: STATIC_PATH
+export const appConfig = {
+  staticPath: STATIC_PATH,
+  dataPath: DATA_PATH
 }

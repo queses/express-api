@@ -1,11 +1,11 @@
-const NodeCache = require('node-cache')
-const { appConfig } = require('../../config')
-const { promisify } = require('util')
-const touch = require('touch')
-const fs = require('fs')
-const { getHash } = require('../../utils/crypto-utils')
-const { isPathExist, removeOldFiles } = require('../../utils/fs-uitls')
-const { streamToBuffer } = require('../../utils/lang-utils')
+import NodeCache from 'node-cache'
+import touch from 'touch'
+import fs from 'fs'
+import { promisify } from 'util'
+import { appConfig } from '../../config';
+import { isPathExist, removeOldFiles } from '../../utils/fs-uitls';
+import { streamToBuffer } from '../../utils/lang-utils';
+import { getHash } from '../../utils/crypto-utils';
 
 const CACHE_TTL = process.env.IMG_CACHE_TTL
 const CACHE_PERIOD = process.env.IMG_CACHE_PERIOD
@@ -13,9 +13,9 @@ const CACHE_PERIOD = process.env.IMG_CACHE_PERIOD
 const asyncTouch = promisify(touch)
 const asyncWriteFile = promisify(fs.writeFile)
 
-class ImageCache {
+export default class ImageCache {
   get imagePath () {
-    return appConfig.staticPath + '/data/image-crop'
+    return appConfig.dataPath + '/image-crop'
   }
 
   constructor () {
@@ -71,7 +71,5 @@ class ImageCache {
     return instance
   }
 }
-
-module.exports = ImageCache
 
 let instance

@@ -2,8 +2,8 @@
 
 node_modules
 
-/build
-/src/static/data
+/dist
+/data/image-crop
 /tmp
 
 .htaccess

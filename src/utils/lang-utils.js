@@ -1,4 +1,4 @@
-module.exports.streamToBuffer = (resultStream) => {
+export const streamToBuffer = (resultStream) => {
   return new Promise((resolve, reject) => {
     const resultBuffers = []
     resultStream.on('data', data => {
@@ -15,6 +15,6 @@ module.exports.streamToBuffer = (resultStream) => {
   })
 }
 
-module.exports.isStream = (obj) => {
+export const isStream = (obj) => {
   return (obj && typeof obj.pipe === 'function' && typeof obj.on === 'function')
 }

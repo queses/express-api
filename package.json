@@ -6,23 +6,30 @@
   "author": "Max Rattle <quesesr@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "backpack dev",
-    "build": "cross-env NODE_ENV=production backpack build",
-    "start": "cross-env NODE_ENV=production node build/main.js"
+    "build": "npm-run-all clean tsc",
+    "tsc": "tsc",
+    "clean": "rimraf dist",
+    "start": "cross-env NODE_ENV=production node dist/main.js",
+    "dev": "ts-node src/index.ts"
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "backpack-core": "^0.8.3",
     "compression": "^1.6.2",
     "cross-env": "^5.0.0",
     "dotenv": "^8.0.0",
     "express": "^4.15.3",
     "gm": "^1.23.0",
-    "jimp": "^0.2.28",
     "node-cache": "^4.1.1",
-    "present": "^1.0.0",
     "qs": "^6.4.0",
     "sharp": "^0.22.1",
     "touch": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/node": "^12.0.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6.3",
+    "ts-node": "^8.2.0",
+    "typescript": "^3.4.5"
   }
 }

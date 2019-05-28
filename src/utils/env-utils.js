@@ -1,1 +1,1 @@
-module.exports.getIsProd = () => process.env.NODE_ENV === 'production'
+export const getIsProd = () => process.env.NODE_ENV === 'production'

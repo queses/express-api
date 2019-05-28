@@ -1,19 +1,19 @@
-const fs = require('fs')
-const path = require('path')
-const { promisify } = require('util')
+import fs from 'fs'
+import path from 'path'
+import { promisify } from 'util'
 
 const mkdir = promisify(fs.mkdir)
 const readdir = promisify(fs.readdir)
 const stat = promisify(fs.stat)
 const unlink = promisify(fs.unlink)
 
-module.exports.isPathExist = async uri => {
-  return new Promise((resolve, reject) => {
+export const isPathExist = async uri => {
+  return new Promise(resolve => {
     fs.access(uri, fs.constants.F_OK, error => { resolve(!error) })
   })
 }
 
-module.exports.createDirIfNotExists = async uri => {
+export const createDirIfNotExists = async uri => {
   let exists = true
   try {
     await access(uri, fs.constants.F_OK)
@@ -26,9 +26,9 @@ module.exports.createDirIfNotExists = async uri => {
   }
 }
 
-module.exports.createDirs = dirs => Promise.all(dirs.map(dirUri => createDirIfNotExists(dirUri)))
+export const createDirs = dirs => Promise.all(dirs.map(dirUri => createDirIfNotExists(dirUri)))
 
-module.exports.removeOldFiles = async (dirPath, hours, toIgnoreGitFiles = true, extsToIgnore = []) => {
+export const removeOldFiles = async (dirPath, hours, toIgnoreGitFiles = true, extsToIgnore = []) => {
   const files = await readdir(dirPath)
 
   const checkTime = Date.now()

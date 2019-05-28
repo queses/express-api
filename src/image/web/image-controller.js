@@ -1,6 +1,6 @@
-const { Router } = require('express')
-const ImageCropService = require('../ImageCropService')
-const SharpImageCropper = require('../sharp/SharpImageCropper')
+import { Router } from 'express'
+import SharpImageCropper from '../sharp/SharpImageCropper';
+import ImageCropService from '../ImageCropService';
 
 const imageController = Router()
 
@@ -19,7 +19,6 @@ imageController.get('/thumb', async function (req, res, next) {
   if (result.buffer && result.ext) {
     res.type(`image/${result.ext}`).send(result.buffer)
   } else if (result.stream && result.ext) {
-    console.log('STReAM!')
     res.type(`image/${result.ext}`)
     result.stream.pipe(res)
   } else {
@@ -27,4 +26,4 @@ imageController.get('/thumb', async function (req, res, next) {
   }
 })
 
-module.exports = imageController
+export default imageController

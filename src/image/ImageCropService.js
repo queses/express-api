@@ -1,15 +1,14 @@
-const { isStream } = require('../utils/lang-utils')
-const { streamToBuffer } = require('../utils/lang-utils')
-const ImageCache = require('./cache/ImageCache')
-const { logDevInfo } = require('../utils/log-utils')
-const { extname } = require('path')
-const axios = require('axios')
-const OriginalImageFetchError = require('./errors/OriginalImageFetchError')
+import { extname } from 'path';
+import axios from 'axios'
+import { isStream, streamToBuffer } from '../utils/lang-utils';
+import { logDevInfo } from '../utils/log-utils';
+import ImageCache from './cache/ImageCache'
+import OriginalImageFetchError from './errors/OriginalImageFetchError'
 
 const DEFAULT_WIDTH = 320
 const DEFAULT_QUALITY = 80
 
-class ImageCropService {
+export default class ImageCropService {
   async crop (options, cropper) {
     if (!options.url) {
       return {}
@@ -18,7 +17,7 @@ class ImageCropService {
     const width = parseInt(options.width, 10) || DEFAULT_WIDTH
     const toJpeg = Boolean(options.toJpeg)
     const quality = options.quality || DEFAULT_QUALITY
-    const ext = this._getExtFromUrl(options.url)
+    const ext = (toJpeg) ? 'jpg' : this._getExtFromUrl(options.url)
 
     const cacheKey = ImageCache.inst.getKeyByOptions(options.url, width, toJpeg, quality)
     const cached = await ImageCache.inst.getCache(cacheKey)
@@ -37,8 +36,7 @@ class ImageCropService {
     const resultStream = cropper.getCropperStream(
       await this._fetchOriginalImage(options.url),
       width,
-      this._getExtFromUrl(options.url),
-      toJpeg,
+      ext,
       quality
     )
 
@@ -82,7 +80,5 @@ class ImageCropService {
     return instance
   }
 }
-
-module.exports = ImageCropService
 
 let instance

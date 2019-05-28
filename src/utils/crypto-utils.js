@@ -1,6 +1,6 @@
-const crypto = require('crypto')
+import crypto from 'crypto'
 
-module.exports.getHash = (source, toHex = true) => {
+export const getHash = (source, toHex = true) => {
   const hash = crypto.createHash('sha256')
   hash.update(source)
 
