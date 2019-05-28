@@ -9,6 +9,7 @@ import { getHash } from '../../utils/crypto-utils';
 
 const CACHE_TTL = process.env.IMG_CACHE_TTL
 const CACHE_PERIOD = process.env.IMG_CACHE_PERIOD
+const FILE_CACHE_TTL = process.env.IMG_FILE_CACHE_TTL_HOURS
 
 const asyncTouch = promisify(touch)
 const asyncWriteFile = promisify(fs.writeFile)
@@ -43,7 +44,7 @@ export default class ImageCache {
     const filePath = this.imagePath + '/' + key
 
     await asyncWriteFile(filePath, imageBuffer)
-    removeOldFiles(this.imagePath, 48)
+    removeOldFiles(this.imagePath, FILE_CACHE_TTL)
   }
 
   updateCacheTtl (key) {
