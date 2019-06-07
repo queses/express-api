@@ -1,7 +1,10 @@
 import sharp from 'sharp'
+import { ImageCropper, ImageCropperOptions } from '../image'
+import { Service } from 'typedi'
 
-export default class SharpImageCropper {
-  getCropperStream (imageBuffer, width, ext, quality) {
+@Service()
+export default class SharpImageCropper  implements ImageCropper  {
+  getCropperStream (imageBuffer: Buffer, { ext, quality, width }: ImageCropperOptions) {
     const sharper = sharp(imageBuffer).resize(width)
 
     if (ext === 'jpg' || ext === 'jpeg') {

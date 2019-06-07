@@ -1,10 +1,8 @@
 import { Router } from 'express'
-import SharpImageCropper from '../sharp/SharpImageCropper';
 import ImageCropService from '../ImageCropService';
+import { Container } from 'typedi';
 
 const imageController = Router()
-
-const sharpCropper = new SharpImageCropper()
 
 imageController.get('/thumb', async function (req, res, next) {
   const options = {
@@ -14,7 +12,7 @@ imageController.get('/thumb', async function (req, res, next) {
     toJpeg: req.query.j
   }
 
-  const result = await ImageCropService.inst.crop(options, sharpCropper)
+  const result = await Container.get(ImageCropService).crop(options)
 
   if (result.buffer && result.ext) {
     res.type(`image/${result.ext}`).send(result.buffer)
