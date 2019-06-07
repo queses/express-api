@@ -16,6 +16,9 @@ const FILE_CACHE_TTL = parseInt(process.env.IMG_FILE_CACHE_TTL_HOURS || '', 10)
 const asyncTouch = promisify(touch)
 const asyncWriteFile = promisify(fs.writeFile)
 
+/**
+ * Альтернатива `node-cache` - `node-cache-manager`
+ */
 @Service()
 export default class ImageCache {
   private _cache: NodeCache
