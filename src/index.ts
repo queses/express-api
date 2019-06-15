@@ -1,7 +1,7 @@
 import './core/init-app'
-import { logError } from './utils/log-utils'
 import { initContainer } from './core/ioc'
 import { startFastify } from './start-fastify'
+import { LogUtil } from './core/utils/LogUtil'
 
 initContainer()
-startFastify().catch(logError)
+startFastify().catch(LogUtil.logError)

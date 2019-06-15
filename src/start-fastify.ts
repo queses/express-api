@@ -1,7 +1,6 @@
 import fastify from 'fastify'
-import { logError, logInfo } from './utils/log-utils'
-import { appConfig } from './config'
 import { apiRoutes } from './core/fastify/api-routes'
+import { LogUtil } from './core/utils/LogUtil'
 
 export const startFastify = async () => {
   const app = fastify()
@@ -13,9 +12,9 @@ export const startFastify = async () => {
   try {
     await app.listen(port, host)
   } catch (err) {
-    logError(err)
+    LogUtil.logError(err)
     process.exit(1)
   }
 
-  logInfo(`App started on ${host}:${port}`)
+  LogUtil.logInfo(`App started on ${host}:${port}`)
 }

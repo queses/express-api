@@ -1,11 +1,11 @@
 Arguments: 
-  /home/ratt/.nvm/versions/node/v10.15.3/bin/node /home/ratt/.nvm/versions/node/v10.15.3/bin/yarn add inversifyjs
+  /home/ratt/.nvm/versions/node/v10.15.3/bin/node /home/ratt/.nvm/versions/node/v10.15.3/bin/yarn add @types/cache-manager-redis
 
 PATH: 
-  /home/ratt/.nvm/versions/node/v10.15.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/WindowsApps/CanonicalGroupLimited.Ubuntu18.04onWindows_1804.2018.817.0_x64__79rhkp1fndgsc:/mnt/c/ProgramData/scoop/shims:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/iCLS:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/iCLS:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Software/VS Code/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Software/Vagrant/bin:/mnt/c/Software/bin:/mnt/c/Users/MaxRattle/.windows-build-tools/python27:/mnt/c/Users/MaxRattle/scoop/apps/nodejs-lts/10.15.1/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/mnt/c/Users/MaxRattle/scoop/persist/nodejs-lts/bin/node_modules/windows-build-tools/node_modules/.bin:/mnt/c/Users/MaxRattle/scoop/persist/nodejs-lts/bin/node_modules/.bin:/mnt/c/Users/MaxRattle/scoop/apps/nodejs-lts/10.15.1/bin:/mnt/c/Users/MaxRattle/scoop/apps/nodejs-lts/current:/mnt/c/Users/MaxRattle/scoop/apps/oraclejdk8/8u201-b09/bin:/mnt/c/Users/MaxRattle/scoop/apps/oraclejre8/8u201-b09/bin:/mnt/c/Users/MaxRattle/scoop/shims:/mnt/c/Users/MaxRattle/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/MaxRattle/AppData/Local/Microsoft/WindowsApps:/mnt/c/Software/Docker Toolbox:/snap/bin
+  /home/ratt/.nvm/versions/node/v10.15.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-11-oracle/bin:/usr/lib/jvm/java-11-oracle/db/bin
 
 Yarn version: 
-  1.16.0
+  1.15.2
 
 Node version: 
   10.15.3
@@ -14,13 +14,13 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/inversifyjs: Not found
-      at Request.params.callback [as _callback] (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:66091:18)
-      at Request.self.callback (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:129590:22)
+  Error: https://registry.yarnpkg.com/@types%2fcache-manager-redis: Not found
+      at Request.params.callback [as _callback] (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:66058:18)
+      at Request.self.callback (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:129541:22)
       at Request.emit (events.js:189:13)
-      at Request.<anonymous> (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:130562:10)
+      at Request.<anonymous> (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:130513:10)
       at Request.emit (events.js:189:13)
-      at IncomingMessage.<anonymous> (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:130484:12)
+      at IncomingMessage.<anonymous> (/home/ratt/.nvm/versions/node/v10.15.3/lib/node_modules/yarn/lib/cli.js:130435:12)
       at Object.onceWrapper (events.js:277:13)
       at IncomingMessage.emit (events.js:194:15)
       at endReadableNT (_stream_readable.js:1125:12)
@@ -43,7 +43,10 @@ npm manifest:
       "fast:dev": "ts-node src/fastify.ts"
     },
     "dependencies": {
+      "@types/cache-manager": "^1.2.7",
       "axios": "^0.16.2",
+      "cache-manager": "^2.9.1",
+      "cache-manager-redis": "^0.6.0",
       "compression": "^1.6.2",
       "cross-env": "^5.0.0",
       "dotenv": "^8.0.0",
@@ -53,12 +56,18 @@ npm manifest:
       "make-promises-safe": "^5.0.0",
       "node-cache": "^4.1.1",
       "qs": "^6.4.0",
+      "reflect-metadata": "^0.1.13",
       "sharp": "^0.22.1",
-      "touch": "^1.0.0"
+      "touch": "^1.0.0",
+      "typedi": "^0.8.0"
     },
     "devDependencies": {
       "@types/express": "^4.16.1",
+      "@types/gm": "^1.18.3",
       "@types/node": "^12.0.2",
+      "@types/node-cache": "^4.1.3",
+      "@types/sharp": "^0.22.2",
+      "@types/touch": "^3.1.1",
       "npm-run-all": "^4.1.5",
       "rimraf": "^2.6.3",
       "ts-node": "^8.2.0",
@@ -81,6 +90,11 @@ Lockfile:
     dependencies:
       "@types/connect" "*"
       "@types/node" "*"
+  
+  "@types/cache-manager@^1.2.7":
+    version "1.2.7"
+    resolved "https://registry.yarnpkg.com/@types/cache-manager/-/cache-manager-1.2.7.tgz#d1f06b945e2dd6b43d0c3dac4a0353bdf9127657"
+    integrity sha512-61nNdxQMy1INsBoQs7OzghVRUDDzcbHZ0VN7h+pYaWdx4s9G+oaTf2DgEzdOSdorLT+v6j5Lafp340AH9l+0zQ==
   
   "@types/connect@*":
     version "3.4.32"
@@ -106,10 +120,24 @@ Lockfile:
       "@types/express-serve-static-core" "*"
       "@types/serve-static" "*"
   
+  "@types/gm@^1.18.3":
+    version "1.18.3"
+    resolved "https://registry.yarnpkg.com/@types/gm/-/gm-1.18.3.tgz#0e5f57cd8e2351c030395c58dbd0503467994909"
+    integrity sha512-9Tm9IkH9BzwLp6Jr4wrs9/zHUcG0r5xkdflH8HN3U0aaKnTEnnAIpDrgetLa5i5CQTfAhawb72qs54puZzlwIQ==
+    dependencies:
+      "@types/node" "*"
+  
   "@types/mime@*":
     version "2.0.1"
     resolved "https://registry.yarnpkg.com/@types/mime/-/mime-2.0.1.tgz#dc488842312a7f075149312905b5e3c0b054c79d"
     integrity sha512-FwI9gX75FgVBJ7ywgnq/P7tw+/o1GUbtP0KzbtusLigAOgIgNISRK0ZPl4qertvXSIE8YbsVJueQ90cDt9YYyw==
+  
+  "@types/node-cache@^4.1.3":
+    version "4.1.3"
+    resolved "https://registry.yarnpkg.com/@types/node-cache/-/node-cache-4.1.3.tgz#524b8b13b787dec4fe982b9d77b251f7d59416f4"
+    integrity sha512-3hsqnv3H1zkOhjygJaJUYmgz5+FcPO3vejBX7cE9/cnuINOJYrzkfOnUCvpwGe9kMZANIHJA7J5pOdeyv52OEw==
+    dependencies:
+      "@types/node" "*"
   
   "@types/node@*", "@types/node@^12.0.2":
     version "12.0.2"
@@ -128,6 +156,20 @@ Lockfile:
     dependencies:
       "@types/express-serve-static-core" "*"
       "@types/mime" "*"
+  
+  "@types/sharp@^0.22.2":
+    version "0.22.2"
+    resolved "https://registry.yarnpkg.com/@types/sharp/-/sharp-0.22.2.tgz#c9b613816ec000d94f153259b25ae41f874a75f5"
+    integrity sha512-oH49f42h3nf/qys0weYsaTGiMv67wPB769ynCoPfBAVwjjxFF3QtIPEe3MfhwyNjQAhQhTEfnmMKvVZfcFkhIw==
+    dependencies:
+      "@types/node" "*"
+  
+  "@types/touch@^3.1.1":
+    version "3.1.1"
+    resolved "https://registry.yarnpkg.com/@types/touch/-/touch-3.1.1.tgz#fdbb769f2af98f8bdbd52bc3ebfb9eaaa4b40bc3"
+    integrity sha512-6qjr7Erk0b9FkZSu17wUJaWhmzUgGfQuec7eIwl9cP7V/YO/k9IcMnHSwAjxAeadC5guq9rwHcoij7PT1RkO1w==
+    dependencies:
+      "@types/node" "*"
   
   abbrev@1:
     version "1.1.0"
@@ -214,6 +256,11 @@ Lockfile:
     version "0.1.5"
     resolved "https://registry.yarnpkg.com/array-series/-/array-series-0.1.5.tgz#df5d37bfc5c2ef0755e2aa4f92feae7d4b5a972f"
   
+  async@1.5.2:
+    version "1.5.2"
+    resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
+    integrity sha1-7GphrlZIDAw8skHJVhjiCJL5Zyo=
+  
   avvio@^6.1.1:
     version "6.2.1"
     resolved "https://registry.yarnpkg.com/avvio/-/avvio-6.2.1.tgz#d9a4e5ccb8411ff77dca42f24ad1137435893773"
@@ -241,6 +288,11 @@ Lockfile:
     dependencies:
       readable-stream "^2.3.5"
       safe-buffer "^5.1.1"
+  
+  bluebird@^3.4.6:
+    version "3.5.5"
+    resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.5.tgz#a8d0afd73251effbbd5fe384a77d73003c17a71f"
+    integrity sha512-5am6HnnfN+urzt4yfg7IgTbotDjIT/u8AJpEt0sIU9FtXfVeezXAPKswrG+xKUCOYAINpSdgZVDU6QFh+cuH3w==
   
   brace-expansion@^1.1.7:
     version "1.1.7"
@@ -275,6 +327,23 @@ Lockfile:
   bytes@2.3.0:
     version "2.3.0"
     resolved "https://registry.yarnpkg.com/bytes/-/bytes-2.3.0.tgz#d5b680a165b6201739acb611542aabc2d8ceb070"
+  
+  cache-manager-redis@^0.6.0:
+    version "0.6.0"
+    resolved "https://registry.yarnpkg.com/cache-manager-redis/-/cache-manager-redis-0.6.0.tgz#b364b8e855b287edae1b07780addb9bc9860ebce"
+    integrity sha512-i7grsVyuIppLyzKAAHM48Eo2YX51+D++Pp1MQiX/9GCBVr3ofayiBpLrz/k/IUpaU9HUZ56P+v5Ee7yJRkfk/w==
+    dependencies:
+      cache-manager "^2.2.0"
+      redis-url "^1.2.1"
+      sol-redis-pool "^0.3.2"
+  
+  cache-manager@^2.2.0, cache-manager@^2.9.1:
+    version "2.9.1"
+    resolved "https://registry.yarnpkg.com/cache-manager/-/cache-manager-2.9.1.tgz#1b487252a77e63ccf46be5e41438282bcbc528fb"
+    integrity sha512-xHSL/neqi9HmaJJmPetbVoIp2C+vXXr2FgfVK6ZcS9H2nXQJVvf3DPm+yD2FG4g7cQSF8l3wOzQ8eHbWcqmOaQ==
+    dependencies:
+      async "1.5.2"
+      lru-cache "4.0.0"
   
   chalk@^2.4.1:
     version "2.4.2"
@@ -477,6 +546,11 @@ Lockfile:
     version "8.0.0"
     resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.0.0.tgz#ed310c165b4e8a97bb745b0a9d99c31bda566440"
     integrity sha512-30xVGqjLjiUOArT4+M5q9sYdvuR4riM6yK9wMcas9Vbp6zZa+ocC9dp6QoftuhTPhFAiLK/0C5Ni2nou/Bk8lg==
+  
+  double-ended-queue@^2.1.0-0:
+    version "2.1.0-0"
+    resolved "https://registry.yarnpkg.com/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
+    integrity sha1-ED01J/0xUo9AGIEwyEHv3XgmTlw=
   
   ee-first@1.1.1:
     version "1.1.1"
@@ -716,6 +790,11 @@ Lockfile:
       strip-ansi "^3.0.1"
       wide-align "^1.1.0"
   
+  generic-pool@2.2.1:
+    version "2.2.1"
+    resolved "https://registry.yarnpkg.com/generic-pool/-/generic-pool-2.2.1.tgz#750ac994eca4e7f87f616e2adff0253f64659ad6"
+    integrity sha1-dQrJlOyk5/h/YW4q3/AlP2RlmtY=
+  
   github-from-package@0.0.0:
     version "0.0.0"
     resolved "https://registry.yarnpkg.com/github-from-package/-/github-from-package-0.0.0.tgz#97fb5d96bfde8973313f20e8288ef9a167fa64ce"
@@ -897,6 +976,14 @@ Lockfile:
   lodash@4.x:
     version "4.17.4"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
+  
+  lru-cache@4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.0.0.tgz#b5cbf01556c16966febe54ceec0fb4dc90df6c28"
+    integrity sha1-tcvwFVbBaWb+vlTO7A+03JDfbCg=
+    dependencies:
+      pseudomap "^1.0.1"
+      yallist "^2.0.0"
   
   lru-cache@^4.0.1:
     version "4.0.2"
@@ -1324,6 +1411,37 @@ Lockfile:
       string_decoder "^1.1.1"
       util-deprecate "^1.0.1"
   
+  redis-commands@^1.2.0:
+    version "1.5.0"
+    resolved "https://registry.yarnpkg.com/redis-commands/-/redis-commands-1.5.0.tgz#80d2e20698fe688f227127ff9e5164a7dd17e785"
+    integrity sha512-6KxamqpZ468MeQC3bkWmCB1fp56XL64D4Kf0zJSwDZbVLLm7KFkoIcHrgRvQ+sk8dnhySs7+yBg94yIkAK7aJg==
+  
+  redis-parser@^2.6.0:
+    version "2.6.0"
+    resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-2.6.0.tgz#52ed09dacac108f1a631c07e9b69941e7a19504b"
+    integrity sha1-Uu0J2srBCPGmMcB+m2mUHnoZUEs=
+  
+  redis-url@^1.2.1:
+    version "1.2.1"
+    resolved "https://registry.yarnpkg.com/redis-url/-/redis-url-1.2.1.tgz#18670095a38e989d379359dd4c6e4abff85e2eb1"
+    integrity sha1-GGcAlaOOmJ03k1ndTG5Kv/heLrE=
+    dependencies:
+      redis ">= 0.0.1"
+  
+  "redis@>= 0.0.1", "redis@>= 2.6.2":
+    version "2.8.0"
+    resolved "https://registry.yarnpkg.com/redis/-/redis-2.8.0.tgz#202288e3f58c49f6079d97af7a10e1303ae14b02"
+    integrity sha512-M1OkonEQwtRmZv4tEWF2VgpG0JWJ8Fv1PhlgT5+B+uNq2cA3Rt1Yt/ryoR+vQNOQcIEgdCdfH0jr3bDpihAw1A==
+    dependencies:
+      double-ended-queue "^2.1.0-0"
+      redis-commands "^1.2.0"
+      redis-parser "^2.6.0"
+  
+  reflect-metadata@^0.1.13:
+    version "0.1.13"
+    resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+    integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
+  
   resolve@^1.10.0:
     version "1.11.0"
     resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.11.0.tgz#4014870ba296176b86343d50b60f3b50609ce232"
@@ -1492,6 +1610,15 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
     dependencies:
       is-arrayish "^0.3.1"
+  
+  sol-redis-pool@^0.3.2:
+    version "0.3.3"
+    resolved "https://registry.yarnpkg.com/sol-redis-pool/-/sol-redis-pool-0.3.3.tgz#a7111d6f8942413ba0ad4733566167052db74a6b"
+    integrity sha1-pxEdb4lCQTugrUczVmFnBS23Sms=
+    dependencies:
+      bluebird "^3.4.6"
+      generic-pool "2.2.1"
+      redis ">= 2.6.2"
   
   sonic-boom@^0.7.3:
     version "0.7.4"
@@ -1677,6 +1804,11 @@ Lockfile:
     dependencies:
       media-typer "0.3.0"
       mime-types "~2.1.15"
+  
+  typedi@^0.8.0:
+    version "0.8.0"
+    resolved "https://registry.yarnpkg.com/typedi/-/typedi-0.8.0.tgz#d8e203bd1d41a96e2b0a5c6295147d74b2b2d03e"
+    integrity sha512-/c7Bxnm6eh5kXx2I+mTuO+2OvoWni5+rXA3PhXwVWCtJRYmz3hMok5s1AKLzoDvNAZqj/Q/acGstN0ri5aQoOA==
   
   typescript@^3.4.5:
     version "3.4.5"

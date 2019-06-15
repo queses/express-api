@@ -1,13 +1,13 @@
 import { extname } from 'path';
 import axios from 'axios'
-import { isStream, streamToBuffer } from '../utils/lang-utils';
-import { logDevInfo } from '../utils/log-utils';
 import ImageCache from './cache/ImageCache'
 import { OriginalImageFetchError } from './errors/OriginalImageFetchError'
 import { ImageCropper, ImageCropServiceOptions, ImageCropServiceResult } from './image'
 import { Readable } from 'stream'
 import { Inject, Service } from 'typedi'
 import { ImageCropperTkn } from './image-ioc'
+import { StreamUtil } from '../core/utils/StreamUtil'
+import { LogUtil } from '../core/utils/LogUtil'
 
 const DEFAULT_WIDTH = 320
 const DEFAULT_QUALITY = 80
@@ -33,12 +33,12 @@ export default class ImageCropService {
     const cacheKey = this.cache.getKeyByOptions(options.url, width, toJpeg, quality)
     const cached = await this.cache.getCache(cacheKey)
 
-    if (isStream(cached)) {
-      logDevInfo('Getting image from file system')
+    if (StreamUtil.isStream(cached)) {
+      LogUtil.logDevInfo('Getting image from file system')
 
       return this.returnStream(cached as Readable, ext)
     } else if (cached) {
-      logDevInfo('Getting image from memory')
+      LogUtil.logDevInfo('Getting image from memory')
       this.cache.updateCacheTtl(cacheKey)
 
       return this.returnBuffer(cached as Buffer, ext)
@@ -49,7 +49,7 @@ export default class ImageCropService {
       { width, ext, quality }
     )
 
-    streamToBuffer(resultStream).then(imageBuffer => this.cache.setCache(cacheKey, imageBuffer))
+    StreamUtil.streamToBuffer(resultStream).then(imageBuffer => this.cache.setCache(cacheKey, imageBuffer))
 
     return this.returnStream(resultStream, ext)
   }

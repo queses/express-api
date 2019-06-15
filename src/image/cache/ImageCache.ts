@@ -1,17 +1,18 @@
-import NodeCache from 'node-cache'
 import touch from 'touch'
 import fs from 'fs'
 import { promisify } from 'util'
-import { appConfig } from '../../config';
-import { isPathExist, removeOldFiles } from '../../utils/fs-uitls';
-import { streamToBuffer } from '../../utils/lang-utils';
-import { getHash } from '../../utils/crypto-utils';
+import { appConfig } from '../../config'
 import { Readable } from 'stream'
-import { Service } from 'typedi'
+import { Inject, Service } from 'typedi'
+import { CryptoUtil } from '../../core/utils/CryptoUtil'
+import { FsUtil } from '../../core/utils/FsUtil'
+import { StreamUtil } from '../../core/utils/StreamUtil'
+import { EnvUtil } from '../../core/utils/EnvUtil'
+import { AppCache } from '../../core/cache/AppCache'
 
-const CACHE_TTL = parseInt(process.env.IMG_CACHE_TTL || '', 10)
-const CACHE_PERIOD = parseInt(process.env.IMG_CACHE_PERIOD || '', 10)
-const FILE_CACHE_TTL = parseInt(process.env.IMG_FILE_CACHE_TTL_HOURS || '', 10)
+const CACHE_TTL = EnvUtil.parseInt(process.env.IMG_CACHE_TTL)
+const FILE_CACHE_TTL = EnvUtil.parseInt(process.env.IMG_FILE_CACHE_TTL_HOURS)
+const CACHE_KEY_PREFIX = 'image:'
 
 const asyncTouch = promisify(touch)
 const asyncWriteFile = promisify(fs.writeFile)
@@ -21,27 +22,21 @@ const asyncWriteFile = promisify(fs.writeFile)
  */
 @Service()
 export default class ImageCache {
-  private _cache: NodeCache
+  @Inject()
+  private appCache: AppCache
 
   get imagePath () {
     return appConfig.dataPath + '/image-crop'
   }
 
-  constructor () {
-    this._cache = new NodeCache({
-      stdTTL: CACHE_TTL,
-      checkperiod: CACHE_PERIOD
-    });
-  }
-
   async getCache (key: string): Promise<null | Buffer | Readable> {
-    const memoryImageBuffer = this._cache.get(key)
+    const memoryImageBuffer = await this.appCache.get(key, CACHE_KEY_PREFIX)
     if (memoryImageBuffer) {
       return memoryImageBuffer as Buffer
     }
 
     const filePath = this.imagePath + '/' + key
-    if (await isPathExist(filePath)) {
+    if (await FsUtil.isPathExist(filePath)) {
       return this.readFile(filePath, key)
     }
 
@@ -49,28 +44,27 @@ export default class ImageCache {
   }
 
   async setCache (key: string, imageBuffer: Buffer) {
-    this._cache.set(key, imageBuffer, () => {})
+    this.appCache.set(key, imageBuffer, CACHE_KEY_PREFIX, CACHE_TTL).catch((err) => { throw err })
 
     const filePath = this.imagePath + '/' + key
-
     await asyncWriteFile(filePath, imageBuffer)
 
-    removeOldFiles(this.imagePath, FILE_CACHE_TTL)
+    FsUtil.removeOldFiles(this.imagePath, FILE_CACHE_TTL).catch((err) => { throw err })
   }
 
   updateCacheTtl (key: string) {
-    this._cache.ttl(key, CACHE_TTL, () => {})
+    this.appCache.updateTtl(key, CACHE_KEY_PREFIX, CACHE_TTL).catch((err) => { throw err })
   }
 
   getKeyByOptions (url: string, width: number, toJpeg: boolean, quality: number) {
     const str = `u=${url}&w=${width}&j=${toJpeg}&q=${quality}`
-    return getHash(str, true)
+    return CryptoUtil.getHash(str, true)
   }
 
   private readFile (filePath: string, key: string) {
     const fileStream = fs.createReadStream(filePath)
 
-    streamToBuffer(fileStream).then(imageBuffer => this.setCache(key, imageBuffer))
+    StreamUtil.streamToBuffer(fileStream).then(imageBuffer => this.setCache(key, imageBuffer))
     asyncTouch(filePath)
 
     return fileStream
