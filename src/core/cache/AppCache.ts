@@ -39,10 +39,12 @@ export class AppCache {
   }
 
   public async get<V> (key: string, keyPrefix?: string): Promise<V> {
-    return this.waitForOperation(
+    const result = await this.waitForOperation(
       this.manager.get(this.prefixKey(key, keyPrefix)),
       'Timeout exceeded while reading from app cache'
     )
+
+    return (typeof result === 'object' && REDIS_ENABLED) ? this.returnFromRedis(result) : result
   }
 
   public async set<V> (key: string, value: V, keyPrefix?: string, ttl: number = DEFAULT_CACHE_TTL): Promise<void> {
@@ -59,6 +61,14 @@ export class AppCache {
       'Timeout exceeded while updating TTL in app cache',
       OPERATION_TIMEOUT_MS * 2
     )
+  }
+
+  private returnFromRedis <R extends any> (res: R) {
+    if (res.type === 'Buffer') {
+      return Buffer.from(res.data)
+    } else {
+      return res
+    }
   }
 
   private prefixKey (key: string, otherPrefix: string = '') {

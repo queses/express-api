@@ -30,9 +30,9 @@ export default class ImageCache {
   }
 
   async getCache (key: string): Promise<null | Buffer | Readable> {
-    const memoryImageBuffer = await this.appCache.get(key, CACHE_KEY_PREFIX)
+    const memoryImageBuffer: Buffer = await this.appCache.get(key, CACHE_KEY_PREFIX)
     if (memoryImageBuffer) {
-      return memoryImageBuffer as Buffer
+      return memoryImageBuffer
     }
 
     const filePath = this.imagePath + '/' + key
