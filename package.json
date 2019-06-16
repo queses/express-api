@@ -1,6 +1,6 @@
 {
-  "name": "mrattle-api",
-  "version": "0.0.1",
+  "name": "lx-node-api",
+  "version": "0.1.0",
   "description": "Max Rattle's API",
   "main": "dist/index",
   "typings": "dist/index",
@@ -10,9 +10,9 @@
     "build": "npm-run-all clean tsc",
     "tsc": "tsc",
     "clean": "rimraf dist",
-    "start": "cross-env NODE_ENV=production node dist/main.js",
-    "dev": "ts-node --files src/index.ts",
-    "fast:dev": "ts-node src/fastify.ts"
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "pm2": "cross-env NODE_ENV=production node dist/pm2.js",
+    "dev": "ts-node --files src/index.ts"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -26,6 +26,7 @@
     "gm": "^1.23.0",
     "make-promises-safe": "^5.0.0",
     "node-cache": "^4.1.1",
+    "pm2": "^3.5.1",
     "qs": "^6.4.0",
     "reflect-metadata": "^0.1.13",
     "sharp": "^0.22.1",
@@ -43,7 +44,7 @@
     "npm-run-all": "^4.1.5",
     "rimraf": "^2.6.3",
     "ts-node": "^8.2.0",
-    "typescript": "^3.4.5",
-    "tsconfig-paths": "^3.5.0"
+    "tsconfig-paths": "^3.5.0",
+    "typescript": "^3.4.5"
   }
 }
