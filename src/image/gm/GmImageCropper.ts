@@ -11,6 +11,6 @@ export default class GmImageCropper implements ImageCropper {
   }
 
   getCropperStream (imageBuffer: Buffer, opts: ImageCropperOptions) {
-    return this.gm(imageBuffer, `image.${opts.ext}`).resize(opts.width).quality(opts.quality) as any
+    return this.gm(imageBuffer).resize(opts.width).quality(opts.quality).stream(opts.ext)
   }
 }

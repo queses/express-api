@@ -14,7 +14,7 @@ pm2.connect((err) => {
     instances: 2,                                                 // Optional: Scales your app by 4
     max_memory_restart: '200M'                                    // Optional: Restarts your app if it reaches 100Mo
   }, (err, apps) => {
-    // pm2.disconnect
+    pm2.disconnect()
 
     if (err) {
       throw err
