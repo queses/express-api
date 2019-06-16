@@ -44,7 +44,7 @@ export class AppCache {
       'Timeout exceeded while reading from app cache'
     )
 
-    return (typeof result === 'object' && REDIS_ENABLED) ? this.returnFromRedis(result) : result
+    return (result && typeof result === 'object' && REDIS_ENABLED) ? this.returnFromRedis(result) : result
   }
 
   public async set<V> (key: string, value: V, keyPrefix?: string, ttl: number = DEFAULT_CACHE_TTL): Promise<void> {
