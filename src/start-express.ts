@@ -1,8 +1,9 @@
 import express from 'express'
 import apiRoutes from './core/web/api-routes'
 import { appConfig } from './config'
-import { LogUtil } from './core/utils/LogUtil'
+import { AppLogger } from './core/log/AppLogger'
 
+/** @deprecated */
 export const startExpress = async () => {
   const app = express()
   const host = process.env.HOST || '127.0.0.1'
@@ -14,5 +15,5 @@ export const startExpress = async () => {
   app.use('/static', express.static(appConfig.staticPath));
 
   app.listen(port, host)
-  LogUtil.logInfo(`App started on ${host}:${port}`)
+  AppLogger.log(`App started on ${host}:${port}`)
 }

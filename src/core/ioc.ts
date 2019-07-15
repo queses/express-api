@@ -1,16 +1,15 @@
 import { initImageIoc } from '../image/image-ioc'
-import SharpImageCropper from '../image/sharp/SharpImageCropper'
-import { EnvUtil } from './utils/EnvUtil'
-import GmImageCropper from '../image/gm/GmImageCropper'
+import { Service, Token } from 'typedi'
+import { Logger } from './core'
+import { WinstonLogger } from './log/WinstonLogger'
 
-const USE_IMAGEMAGICK = EnvUtil.parseInt(process.env.IMG_USE_IMAGEMAGICK)
+export const LoggerTkn = new Token<Logger>('Logger')
 
 export const initContainer = () => {
-  const config = {
-    image: {
-      ImageCropper: USE_IMAGEMAGICK ? GmImageCropper : SharpImageCropper
-    }
-  }
+  initCoreIoc()
+  initImageIoc()
+}
 
-  initImageIoc(config.image)
+const initCoreIoc = () => {
+  Service(LoggerTkn)(WinstonLogger)
 }

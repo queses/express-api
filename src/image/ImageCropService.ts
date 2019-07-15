@@ -7,7 +7,7 @@ import { Readable } from 'stream'
 import { Inject, Service } from 'typedi'
 import { ImageCropperTkn } from './image-ioc'
 import { StreamUtil } from '../core/utils/StreamUtil'
-import { LogUtil } from '../core/utils/LogUtil'
+import { AppLogger } from '../core/log/AppLogger'
 
 const DEFAULT_WIDTH = 320
 const DEFAULT_QUALITY = 80
@@ -34,11 +34,11 @@ export default class ImageCropService {
     const cached = await this.cache.getCache(cacheKey)
 
     if (StreamUtil.isStream(cached)) {
-      LogUtil.logDevInfo('Getting image from file system')
+      AppLogger.dev('Getting image from file system')
 
       return this.returnStream(cached as Readable, ext)
     } else if (cached) {
-      LogUtil.logDevInfo('Getting image from memory')
+      AppLogger.dev('Getting image from memory')
       this.cache.updateCacheTtl(cacheKey)
 
       return this.returnBuffer(cached as Buffer, ext)

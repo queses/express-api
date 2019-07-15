@@ -1,9 +1,4 @@
 import { Readable } from 'stream'
-import { ConstructorType } from '../core/core'
-
-export type ImageIocConfig = {
-  ImageCropper: ConstructorType<ImageCropper>
-}
 
 export type ImageCropServiceOptions = {
   url: string
