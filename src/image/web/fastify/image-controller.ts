@@ -1,6 +1,8 @@
 import { FastifyInstance } from 'fastify'
 import ImageCropService from '../../ImageCropService'
 import { Container } from 'typedi'
+import { ImageCropServiceResult } from '../../image'
+import { OriginalImageFetchError } from '../../errors/OriginalImageFetchError'
 
 export const imageController = async (fastify: FastifyInstance, opts: { basePath: string }) => {
   fastify.get(opts.basePath + '/thumb', async (req, rep) => {
@@ -11,7 +13,17 @@ export const imageController = async (fastify: FastifyInstance, opts: { basePath
       toJpeg: req.query.j
     }
 
-    const result = await Container.get(ImageCropService).crop(options)
+    let result: ImageCropServiceResult
+    try {
+      result = await Container.get(ImageCropService).crop(options)
+    } catch (e) {
+      if (e instanceof OriginalImageFetchError) {
+        rep.status(404).send()
+        return
+      } else {
+        throw e
+      }
+    }
 
     if (result.buffer && result.ext) {
       rep.type(`image/${result.ext}`).send(result.buffer)
